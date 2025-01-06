@@ -2,28 +2,60 @@
 
 ## Group Members:
 
-names here.
+Manoel Jeremias-Neto
        
 # Intentions:
 
-A statement of the problem you are solving and/or a high level description of the project.
+2-4 player online poker game
     
 # Intended usage:
 
-A description as to how the project will be used (describe the user interface).
+everyone will run the program.
+whoever the host is will select "host" when starting, and then decide how many players to play, select starting chip amount, their "room" name, and their own personal username.
+all the other players will select "join" and will then join a room, then select their username.
+they will then play poker, table order is the order they joined (host first). after each game, they will rotate who starts
   
 # Technical Details:
 
-A description of your technical design. This should include:
+one program with 2 modes:
+       "host side":
+              1. "host" sets up room settings ("client" (player) count, starting chips, "room" name, personal username)
+              2. "host" creates WKP (O_WRONLY)
+              3. "client" connects to WKP, "host" removes WKP
+              4. "host" creates a PP for "client" to connect to (O_RDONLY)
+              5. "host" waits for "client" to send its own PP
+              6. "host" connects to "client" PP. (O_WRONLY)
+              7. repeat 2-6 for specified number of "clients"
+              8. "host" runs poker game, sending "client"s info about their hand
+              9. "host" waits for "client" response on what player is doing
+              10. "host" acts on information.
+             EXTRA:
+              if "host" disconects, (ctrl + c) send a message to all "client"s that "host" stopped, stops them as well.
+       "client side":
+              1. "client" chooses its own username
+              2. "client" searches for WKP (O_RDONLY)
+              3. "client" connects to PP from "host" (O_WRONLY)
+              4. "client" creates its own PP, sends it to "host" (O_RDONLY)
+              5. "client" recieves information on gamestate from "host"
+              6. "client" sends "host" player reaction to gamestate
+             EXTRA:
+              if "client" disconects (ctrl + c), sends a message to "host" to remove only them from the game, and game continues as normal (unless no more clients connected, in which case game over.) 
    
-How you will be using the topics covered in class in the project.
+Topics Covered in Class:
+       Allocating memory (obv)
+       Working with files (client searching for WKP)
+       Pipes (connecting "client" and "host" together")
+       Signals (alerting program, if player leaves)
      
-How you are breaking down the project and who is responsible for which parts.
+Who is responisble:
+       ME
   
-What data structures you will be using and how.
-     
-What algorithms and /or data structures you will be using, and how.
+Data Structures
+       idk yet, will figure out as it becomes neccessary. :3
     
 # Intended pacing:
 
-A timeline with expected completion dates of parts of the project.
+mon 6 : start
+mon 13 : have clients and hosts connecting to each other
+sat 19 : have poker game working
+tues 21 : bug fixing done
