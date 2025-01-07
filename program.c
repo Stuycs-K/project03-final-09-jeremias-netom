@@ -26,6 +26,6 @@
 int main(int argc, char const *argv[]) {
   clrscr();
   printf("HOST(h) OR JOIN(j) GAME?\n");
-
+  //edit for test
   return 0;
 }
