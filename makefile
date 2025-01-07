@@ -6,7 +6,7 @@ program.o: program.c
 run:
 	@./program
 save:
-	@git add *.c *.h makefile
+	@git add *.c *.h makefile *.md
 	@git commit
 	@git push
 	@clear
