@@ -6,14 +6,14 @@ Manoel Jeremias-Neto
        
 # Intentions:
 
-2-4 player online poker game
+2-4 player crazy 8s
     
 # Intended usage:
 
 everyone will run the program.
-whoever the host is will select "host" when starting, and then decide how many players to play, select starting chip amount, their "room" name, and their own personal username.
+whoever the host is will select "host" when starting, and then decide how many players to play, select starting card amount, their "room" name, and their own personal username.
 all the other players will select "join" and will then join a room, then select their username.
-they will then play poker, table order is the order they joined (host first). after each game, they will rotate who starts
+they will then play crazy 8s (starting with random player)
   
 # Technical Details:
 
@@ -26,7 +26,7 @@ one program with 2 modes:
               5. "host" waits for "client" to send its own PP
               6. "host" connects to "client" PP. (O_WRONLY)
               7. repeat 2-6 for specified number of "clients"
-              8. "host" runs poker game, sending "client"s info about their hand
+              8. "host" runs crazy 8s game, sending "client"s info about their hand
               9. "host" waits for "client" response on what player is doing
               10. "host" acts on information.
              EXTRA:
