@@ -24,8 +24,25 @@
 #define EXIT 4
 
 int main(int argc, char const *argv[]) {
+  //
+  char buffer[100];
+  //
   clrscr();
+  //
   printf("HOST(h) OR JOIN(j) GAME?\n");
-  //edit for test
-  return 0;
+  while(fgets(buffer,100,stdin)!= 0){
+    if (strcmp(buffer, "h\n")==0 || strcmp(buffer, "H\n")==0){
+      //host
+      break;
+    }
+    else if (strcmp(buffer, "j\n")==0 || strcmp(buffer, "J\n")==0){
+      //join
+      break;
+    }
+    else{
+      printf("Invalid response, please use j / h.\n");
+    }
+  }
+  printf("Thank you for playing!                                                               \n");
+return 0;
 }
