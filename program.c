@@ -9,6 +9,8 @@
 #include <errno.h>
 #include <time.h>
 #define clrscr() printf("\e[1;1H\e[2J")
+#include "host.h"
+#include "client.h"
 
 #define NETWORKING_H
 #define WKP "/mario"
@@ -32,11 +34,11 @@ int main(int argc, char const *argv[]) {
   printf("HOST(h) OR JOIN(j) GAME?\n");
   while(fgets(buffer,100,stdin)!= 0){
     if (strcmp(buffer, "h\n")==0 || strcmp(buffer, "H\n")==0){
-      //host
+      host();
       break;
     }
     else if (strcmp(buffer, "j\n")==0 || strcmp(buffer, "J\n")==0){
-      //join
+      client();
       break;
     }
     else{
