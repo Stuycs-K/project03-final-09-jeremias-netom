@@ -14,7 +14,10 @@ void host(){
   char roomname[100];
   char username[100];
   //
-
+  int start = 0;
+  int toclientarr[3];
+  int fromclientarr[3];
+  int players = 0;
   //
   int done_asking = 0;
   char input[100];
@@ -40,6 +43,19 @@ void host(){
   }
   if (done_asking == 1){
     exit(0)
+    //end
   }
-  printf("yippeee\n" );
+  //continue
+  if (roomname[strlen(roomname)-1] == '\n'){
+    roomname[strlen -1 ] = '\0';
+  }
+  
+  while(start == 0){
+    printf("waiting for people to join\n");
+    mkfifo(strcat("/tmp", roomname), 666);
+    int fromclient;
+    fromclient = open(strcat("/tmp", roomname), O_WRONLY);
+    remove(strcat("/tmp", roomname));
+    if(players == 0)
+  }
 }
