@@ -8,7 +8,7 @@
 #include <string.h>
 #include <errno.h>
 #include <time.h>
-
+//DONT DISPLAY ROOMS THAT DONT HAVE AN "A" AT THE END
 void client(){
-  
+
 }
