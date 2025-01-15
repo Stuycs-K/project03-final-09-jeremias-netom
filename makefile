@@ -15,6 +15,8 @@ save:
 	@git push
 	@clear
 	@echo saved and pushed
+pulsar:
+	@pulsar *.c *.h makefile
 clean:
 	@rm *.o
 	@rm program
