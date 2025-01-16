@@ -10,6 +10,7 @@
 #include <time.h>
 #include <sys/signalfd.h>
 
+
 static volatile int keepRunning = 1:
 
 void intHandler(int dummy) {
@@ -19,6 +20,15 @@ void intHandler(int dummy) {
   if (dummy = SIGPIPE){
     keepRunning = 0;
   }
+}
+
+char * randomizecard(char * suit, char * number){
+  char card[4];
+  srand(time(NULL));   // Initialization, should only be called once.
+  int r = rand();
+  strcat(card, suit[r%4]);
+  strcat(card, number[r%9]);
+  return card;
 }
 
 void host(){
@@ -133,19 +143,80 @@ void host(){
     toclientarr[0] = to_player_1;
     toclientarr[1] = to_player_2;
     toclientarr[2] = to_player_3;
+
     fromclientarr[0] = from_player_1;
     fromclientarr[1] = from_player_2;
     fromclientarr[2] = from_player_3;
 
+    int player0cards = 0;
+    int player1cards = 0;
+    int player2cards = 0;
+    int player4cards = 0;
+
+    char * p0cards[100];
+    char * p1cards[100];
+    char * p2cards[100];
+    char * p3cards[100];
+
     int gamerunning = 1;
+    int currplayer = 0;
+    char currcard[4];
+    char winner[100];
 
-    while(gamerunning == 1){
-      int curgamerunning = 1;
 
-      
+    char * suit[4];
+    strcpy(suit[0], "s");
+    strcpy(suit[1], "c");
+    strcpy(suit[2], "h");
+    strcpy(suit[3], "d");
 
+    char * value[9];
+    for (int i = 0; i < 9; i ++){
+      char num[2]
+      snprintf(num, 2, "%d", i+1);
+      strcpy(value[i], num);
     }
 
+    for (int k = 0; k < 7; k ++){
+      strcpy(p0cards[k], randomizecard(suit, value));
+      player0cards ++;
+    }
+    for (int k = 0; k < 7; k ++){
+      strcpy(p1cards[k], randomizecard(suit, value));
+      player1cards ++;
+    }
+    for (int k = 0; k < 7; k ++){
+      strcpy(p2cards[k], randomizecard(suit, value));
+      player2cards ++;
+    }
+    for (int k = 0; k < 7; k ++){
+      strcpy(p3cards[k], randomizecard(suit, value));
+      player3cards ++;
+    }
+
+    strcpy(currcard, randomizecard(suit, value));
+
+    while(gamerunning == 1){
+      //send each player the gamestate
+      if (players == 3){
+
+      }
+      else if(players == 2){
+
+      }
+      else if(players == 1){
+
+      }
+
+
+
+      if (currplayer == 0){
+
+      }
+
+
+    }
+    printf("%s WON!!!!\n", winner);
   }
   printf("Someone disconnected (bruh moment)\n");
   for (int i = 0; i < 3; i ++ ){
