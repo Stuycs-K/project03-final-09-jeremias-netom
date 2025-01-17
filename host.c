@@ -77,10 +77,6 @@ void host(){
     }
     strcat(roomname, "A");
 
-    mkfifo("/tmp/To_p1");
-    mkfifo("/tmp/To_p2");
-    mkfifo("/tmp/To_p3");
-
     int to_player_1=0;
     int to_player_2=0;
     int to_player_3=0;
@@ -101,6 +97,7 @@ void host(){
       remove(strcat("/tmp/", roomname));
 
       if(players == 0){
+        mkfifo("/tmp/To_p1");
         strcpy(buffer, "/tmp/To_p1");
         write(toclient, buffer);
         players++;
@@ -110,6 +107,7 @@ void host(){
         remove("/tmp/To_p1");
       }
       else if(players == 1){
+        mkfifo("/tmp/To_p2");
         strcpy(buffer, "/tmp/To_p2");
         write(toclient, buffer);
         players++;
@@ -119,6 +117,7 @@ void host(){
         remove("/tmp/To_p2");
       }
       else if(players == 2){
+        mkfifo("/tmp/To_p3");
         strcpy(buffer, "/tmp/To_p3");
         write(toclient, buffer);
         players++;
@@ -151,16 +150,26 @@ void host(){
     int player0cards = 0;
     int player1cards = 0;
     int player2cards = 0;
-    int player4cards = 0;
+    int player3cards = 0;
 
     char * p0cards[100];
     char * p1cards[100];
     char * p2cards[100];
     char * p3cards[100];
 
+    char p0name[100];
+    strcpy(p0name, username);
+    char p1name[100];
+    char p2name[100];
+    char p3name[100];
+
+    read(fromclientarr[0], p1name, 100);
+    read(fromclientarr[1], p2name, 100);
+    read(fromclientarr[2], p3name, 100);
+
     int gamerunning = 1;
     int currplayer = 0;
-    char currcard[4];
+    char currcard[100];
     char winner[100];
 
 
@@ -198,14 +207,38 @@ void host(){
 
     while(gamerunning == 1){
       //send each player the gamestate
+      char * buffer2[100];
       if (players == 3){
-
+        snprintf(buffer2, 100, "%d", p3cards);
+        write(toclientarr[2], buffer2, 100);
+        for (int o = 0; o < p3cards; o ++){
+          strcpy(buffer2, player3cards[o]);
+          write(toclientarr[2], buffer2, 100);
+        }
+        strcpy(buffer2, currcard, 100);
+        write(toclientarr[2], buffer2, 100);
+        strcpy(buffer2, )
+        write(toclientarr, )
       }
-      else if(players == 2){
-
+      if(players >= 2){
+        snprintf(buffer2, 100, "%d", p2cards);
+        write(toclientarr[1], buffer2, 100);
+        for (int o = 0; o < p2cards; o ++){
+          strcpy(buffer2, player2cards[o]);
+          write(toclientarr[1], buffer2, 100);
+        }
+        strcpy(buffer2, currcard, 100);
+        write(toclientarr[1], buffer2, 100);
       }
-      else if(players == 1){
-
+      if(players >= 1){
+        snprintf(buffer2, 100, "%d", p1cards);
+        write(toclientarr[0], buffer2, 100);
+        for (int o = 0; o < p1cards; o ++){
+          strcpy(buffer2, player1cards[o]);
+          write(toclientarr[0], buffer2, 100);
+        }
+        strcpy(buffer2, currcard, 100);
+        write(toclientarr[0], buffer2, 100);
       }
 
 
@@ -213,8 +246,19 @@ void host(){
       if (currplayer == 0){
 
       }
+      else if(currplayer == 1){
 
+      }
+      else if(currplayer == 2){
 
+      }
+      else if(currplayer == 3){
+
+      }
+      if(currplayer == 3){
+        currplayer = -1;
+      }
+      curplayer++;
     }
     printf("%s WON!!!!\n", winner);
   }
