@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <errno.h>
+#define clrscr() printf("\e[1;1H\e[2J")
 #include <time.h>
 //DONT DISPLAY ROOMS THAT DONT HAVE AN "A" AT THE END
 void client(){

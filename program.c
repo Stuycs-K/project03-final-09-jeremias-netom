@@ -42,7 +42,7 @@ int main(int argc, char const *argv[]) {
       break;
     }
     else{
-      printf("Invalid response, please use j / h.\n");
+      printf("Invalid response, please use (j / h).\n");
     }
   }
   printf("Thank you for playing!                                                               \n");
