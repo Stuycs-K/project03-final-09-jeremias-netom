@@ -61,7 +61,7 @@ void host(){
       }
       strcpy(roomname, input);
       printf("\nAre you ok with these responses? (y/n)\nusername: %sroomname: %s", username, roomname);
-      if(fgets(input,100,stdin) == 0){
+      if(fgets(input,100,stdin) == -1){
         done_asking = 1;
       }
       if (strcmp(input, "y\n")==0 || strcmp(input, "Y\n")==0){
@@ -128,17 +128,16 @@ void host(){
       }
       else{
         printf("Starting!\n");
-        close(toclient);
         start = 1;
       }
       printf("would you like to start? players joined: %d (y/n)\n", players);
       if (input[0] == 'Y'|| input[0] == 'y'){
-        close(toclient);
         start = 1;
       }
       close(toclient);
+      remove(strcat("/tmp/", roomname));
     }
-
+    remove(strcat("/tmp/", roomname));
     toclientarr[0] = to_player_1;
     toclientarr[1] = to_player_2;
     toclientarr[2] = to_player_3;
@@ -164,9 +163,12 @@ void host(){
     char p3name[100];
 
     read(fromclientarr[0], p1name, 100);
-    read(fromclientarr[1], p2name, 100);
-    read(fromclientarr[2], p3name, 100);
-
+    if(players >= 2){
+      read(fromclientarr[1], p2name, 100);
+    }
+    if(players == 3){
+      read(fromclientarr[2], p3name, 100);
+    }
     int gamerunning = 1;
     int currplayer = 0;
     char currcard[100];
@@ -302,7 +304,7 @@ void host(){
         strcpy(buffer2, p1name, 100);
         write(toclientarr[0], buffer2, 100);
         //
-        if(players == 2){
+        if(players >= 2){
           snprintf(buffer2, 100, "%d", player2cards);
           write(toclientarr[0], buffer2, 100);
           strcpy(buffer2, p2name, 100);
@@ -332,13 +334,13 @@ void host(){
           }
         }
         printf("other players cards\n");
-        printf("%s: %d\n", p0name, p0cards);
-        printf("%s: %d\n", p0name, p0cards);
+        printf("%s: %d cards \n", p0name, p0cards);
+        printf("%s: %d cards \n", p0name, p0cards);
         if (players >=2){
-          printf("%s: %d\n", p0name, p0cards);
+          printf("%s: %d cards \n", p0name, p0cards);
         }
         if (players==3){
-          printf("%s: %d\n", p0name, p0cards);
+          printf("%s: %d cards \n", p0name, p0cards);
         }
         int cardvalid = 0;
         while(cardvalid == 0){
@@ -534,7 +536,9 @@ void host(){
     if(i < players-1){
       char exit[100];
       strcpy(exit, "e");
-      write(toclientarr[i], exit, 100);
+      if(toclientarr[i] != 0){
+        write(toclientarr[i], exit, 100);
+      }
     }
   }
   exit(0);
