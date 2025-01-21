@@ -77,8 +77,6 @@ void host(){
     if (roomname[strlen(roomname)-1] == '\n'){
       roomname[strlen -1 ] = '\0';
     }
-    strcat(roomname, "A");
-
     int to_player_1=0;
     int to_player_2=0;
     int to_player_3=0;
@@ -378,24 +376,26 @@ void host(){
         }
       }
       else if(currplayer == 1){
+        char buffer3[100];
         int cardvalid = 0;
+        strcpy(buffer3, "u");
+        write(toclientarr[0], buffer3, 100);
+        strcpy(buffer3, "n");
+        write(toclientarr[1], buffer3, 100);
+        write(toclientarr[2], buffer3, 100);
         while(cardvalid == 0){
-          printf("Enter the card you want to play or d for draw\n");
-          char buffer3[100];
-          strcpy(buffer3, "n");
-          write(toclientarr[0], buffer3, 100);
-          write(toclientarr[1], buffer3, 100);
-          write(toclientarr[2], buffer3, 100);
-          fgets(buffer3,100,stdin);
+          read(fromclientarr[0], buffer3, 100);
           if(strlen(buffer3) == 3){
             if(currcard[0] == buffer3[0] ||currcard[1] == buffer3[1] ||currcard[1] == '8' ||'8' == buffer3[1]){
               buffer3[2]='\0';
-              for(int t = 0; t < p0cards; t++){
-                if(strcmp(buffer3, player0cards[p0cards]) == 0){
-                  for(int y = t; y < p0cards; y ++){
-                    strcpy(player0cards[y], player0cards[y+1]);
+              for(int t = 0; t < p1cards; t++){
+                if(strcmp(buffer3, player1cards[p1cards]) == 0){
+                  for(int y = t; y < p1cards; y ++){
+                    strcpy(player1cards[y], player1cards[y+1]);
                   }
-                  p0cards--;
+                  p1cards--;
+                  strcpy(buffer3, "g");
+                  write(toclientarr[0], buffer3, 100);
                   cardvalid = 1;
                   break;
                 }
@@ -403,21 +403,110 @@ void host(){
             }
           }
           else if(strcmp(buffer3, "d\n") == 0){
-            player0cards[p0cards] = randomizecard(suit, value);
-            p0cards ++;
+            player1cards[p1cards] = randomizecard(suit, value);
+            p1cards ++;
+            strcpy(buffer3, "g");
+            write(toclientarr[0], buffer3, 100);
             cardvalid = 1;
             break;
           }
-          else{
-            printf("invalid entry (bruh)\n");
-          }
+          strcpy(buffer3, "b");
+          write(toclientarr[0], buffer3, 100);
         }
       }
       else if(currplayer == 2){
-
+        char buffer3[100];
+        int cardvalid = 0;
+        strcpy(buffer3, "u");
+        write(toclientarr[1], buffer3, 100);
+        strcpy(buffer3, "n");
+        write(toclientarr[0], buffer3, 100);
+        write(toclientarr[2], buffer3, 100);
+        while(cardvalid == 0){
+          read(fromclientarr[1], buffer3, 100);
+          if(strlen(buffer3) == 3){
+            if(currcard[0] == buffer3[0] ||currcard[1] == buffer3[1] ||currcard[1] == '8' ||'8' == buffer3[1]){
+              buffer3[2]='\0';
+              for(int t = 0; t < p2cards; t++){
+                if(strcmp(buffer3, player2cards[p1cards]) == 0){
+                  for(int y = t; y < p2cards; y ++){
+                    strcpy(player2cards[y], player2cards[y+1]);
+                  }
+                  p2cards--;
+                  strcpy(buffer3, "g");
+                  write(toclientarr[1], buffer3, 100);
+                  cardvalid = 1;
+                  break;
+                }
+              }
+            }
+          }
+          else if(strcmp(buffer3, "d\n") == 0){
+            player2cards[p2cards] = randomizecard(suit, value);
+            p2cards ++;
+            strcpy(buffer3, "g");
+            write(toclientarr[1], buffer3, 100);
+            cardvalid = 1;
+            break;
+          }
+          strcpy(buffer3, "b");
+          write(toclientarr[1], buffer3, 100);
+        }
       }
       else if(currplayer == 3){
-
+        char buffer3[100];
+        int cardvalid = 0;
+        strcpy(buffer3, "u");
+        write(toclientarr[2], buffer3, 100);
+        strcpy(buffer3, "n");
+        write(toclientarr[0], buffer3, 100);
+        write(toclientarr[1], buffer3, 100);
+        while(cardvalid == 0){
+          read(fromclientarr[2], buffer3, 100);
+          if(strlen(buffer3) == 3){
+            if(currcard[0] == buffer3[0] ||currcard[1] == buffer3[1] ||currcard[1] == '8' ||'8' == buffer3[1]){
+              buffer3[2]='\0';
+              for(int t = 0; t < p3cards; t++){
+                if(strcmp(buffer3, player3cards[p1cards]) == 0){
+                  for(int y = t; y < p3cards; y ++){
+                    strcpy(player3cards[y], player3cards[y+1]);
+                  }
+                  p3cards--;
+                  strcpy(buffer3, "g");
+                  write(toclientarr[2], buffer3, 100);
+                  cardvalid = 1;
+                  break;
+                }
+              }
+            }
+          }
+          else if(strcmp(buffer3, "d\n") == 0){
+            player3cards[p3cards] = randomizecard(suit, value);
+            p3cards ++;
+            strcpy(buffer3, "g");
+            write(toclientarr[2], buffer3, 100);
+            cardvalid = 1;
+            break;
+          }
+          strcpy(buffer3, "b");
+          write(toclientarr[2], buffer3, 100);
+        }
+      }
+      if(p0cards == 0){
+        strcpy(winner, p0name);
+        gamerunning = 0;
+      }
+      if(p1cards == 0){
+        strcpy(winner, p1name);
+        gamerunning = 0;
+      }
+      if(p2cards == 0){
+        strcpy(winner, p2name);
+        gamerunning = 0;
+      }
+      if(p3cards == 0){
+        strcpy(winner, p3name);
+        gamerunning = 0;
       }
       if(currplayer == 3){
         currplayer = 0;
@@ -430,7 +519,15 @@ void host(){
         currplayer = 0;
       }
     }
+    if(players == 3){
+      write(toclientarr[2], winner, 100);
+    }
+    if(players>= 2){
+      write(toclientarr[1], winner, 100);
+    }
+    write(toclientarr[0], winner, 100);
     printf("%s WON!!!!\n", winner);
+    exit(0);
   }
   printf("Someone disconnected (bruh moment)\n");
   for (int i = 0; i < 3; i ++ ){
